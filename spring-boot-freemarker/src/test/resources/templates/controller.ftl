@@ -25,25 +25,25 @@ public class ${modelNameUpperCamel}Controller {
 
     @PostMapping("/add")
     public Result add(${modelNameUpperCamel} ${modelNameLowerCamel}) {
-${modelNameLowerCamel}Service.save(${modelNameLowerCamel});
+        ${modelNameLowerCamel}Service.save(${modelNameLowerCamel});
         return ResultUtil.success();
     }
 
     @PostMapping("/delete")
     public Result delete(@RequestParam Integer id) {
-${modelNameLowerCamel}Service.deleteById(id);
+        ${modelNameLowerCamel}Service.deleteById(id);
         return ResultUtil.success();
     }
 
     @PostMapping("/update")
     public Result update(${modelNameUpperCamel} ${modelNameLowerCamel}) {
-${modelNameLowerCamel}Service.update(${modelNameLowerCamel});
+        ${modelNameLowerCamel}Service.update(${modelNameLowerCamel});
         return ResultUtil.success();
     }
 
     @PostMapping("/detail")
     public Result detail(@RequestParam Integer id) {
-${modelNameUpperCamel} ${modelNameLowerCamel} = ${modelNameLowerCamel}Service.findById(id);
+        ${modelNameUpperCamel} ${modelNameLowerCamel} = ${modelNameLowerCamel}Service.findById(id);
         return ResultUtil.success(${modelNameLowerCamel});
     }
 

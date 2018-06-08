@@ -93,6 +93,35 @@ public class CodeGenerator {
 
     private static void genService(String tableName, String modelName) {
 
+        try {
+            freemarker.template.Configuration cfg = getConfiguration();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("date", DATE);
+            data.put("author", AUTHOR);
+            String modelNameUpperCamel = StringUtils.isEmpty(modelName) ? tableNameConvertUpperCamel(tableName) : modelName;
+            data.put("modelNameUpperCamel", modelNameUpperCamel);
+            data.put("modelNameLowerCamel", tableNameConvertLowerCamel(tableName));
+            data.put("basePackage", BASE_PACKAGE);
+
+            File file = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE + modelNameUpperCamel + "Service.java");
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            cfg.getTemplate("service.ftl").process(data,
+                    new FileWriter(file));
+            System.out.println(modelNameUpperCamel + "Service.java 生成成功");
+
+            File file1 = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE_IMPL + modelNameUpperCamel + "ServiceImpl.java");
+            if (!file1.getParentFile().exists()) {
+                file1.getParentFile().mkdirs();
+            }
+            cfg.getTemplate("service-impl.ftl").process(data,
+                    new FileWriter(file1));
+            System.out.println(modelNameUpperCamel + "ServiceImpl.java 生成成功");
+        } catch (Exception e) {
+            throw new RuntimeException("生成Service失败", e);
+        }
     }
 
     private static void genModelAndMapper(String tableName, String modelName) {
