@@ -82,16 +82,14 @@ public class CodeGenerator {
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
-            cfg.getTemplate("service.ftl").process(data,
-                    new FileWriter(file));
+            cfg.getTemplate("service.ftl").process(data, new FileWriter(file));
             System.out.println(modelNameUpperCamel + "Service.java 生成成功");
 
             File file1 = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE_IMPL + modelNameUpperCamel + "ServiceImpl.java");
             if (!file1.getParentFile().exists()) {
                 file1.getParentFile().mkdirs();
             }
-            cfg.getTemplate("service-impl.ftl").process(data,
-                    new FileWriter(file1));
+            cfg.getTemplate("service-impl.ftl").process(data, new FileWriter(file1));
             System.out.println(modelNameUpperCamel + "ServiceImpl.java 生成成功");
         } catch (Exception e) {
             throw new RuntimeException("生成Service失败", e);
