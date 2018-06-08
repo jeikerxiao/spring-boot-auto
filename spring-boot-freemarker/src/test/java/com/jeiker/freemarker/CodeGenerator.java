@@ -15,7 +15,7 @@ import java.util.Map;
 import static com.jeiker.freemarker.ProjectConstant.*;
 
 /**
- * Description: spring-boot-freemarker
+ * Description: 代码生成器，根据数据表名称生成对应的Model、Mapper、Service、Controller简化开发。
  * Created by jeikerxiao on 2018/6/8 上午9:47
  */
 public class CodeGenerator {
@@ -65,32 +65,6 @@ public class CodeGenerator {
         genController(tableName, modelName);
     }
 
-    private static void genController(String tableName, String modelName) {
-        try {
-            freemarker.template.Configuration cfg = getConfiguration();
-            // 模板数据
-            Map<String, Object> data = new HashMap<>();
-            data.put("date", DATE);
-            data.put("author", AUTHOR);
-            String modelNameUpperCamel = StringUtils.isEmpty(modelName) ? tableNameConvertUpperCamel(tableName) : modelName;
-            data.put("baseRequestMapping", modelNameConvertMappingPath(modelNameUpperCamel));
-            data.put("modelNameUpperCamel", modelNameUpperCamel);
-            data.put("modelNameLowerCamel", CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, modelNameUpperCamel));
-            data.put("basePackage", BASE_PACKAGE);
-            // 模板文件
-            File file = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_CONTROLLER + modelNameUpperCamel + "Controller.java");
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-            //cfg.getTemplate("controller-restful.ftl").process(data, new FileWriter(file));
-            cfg.getTemplate("controller.ftl").process(data, new FileWriter(file));
-
-            System.out.println(modelNameUpperCamel + "Controller.java 生成成功");
-        } catch (Exception e) {
-            throw new RuntimeException("生成Controller失败", e);
-        }
-    }
-
     private static void genService(String tableName, String modelName) {
 
         try {
@@ -121,6 +95,32 @@ public class CodeGenerator {
             System.out.println(modelNameUpperCamel + "ServiceImpl.java 生成成功");
         } catch (Exception e) {
             throw new RuntimeException("生成Service失败", e);
+        }
+    }
+
+    private static void genController(String tableName, String modelName) {
+        try {
+            freemarker.template.Configuration cfg = getConfiguration();
+            // 模板数据
+            Map<String, Object> data = new HashMap<>();
+            data.put("date", DATE);
+            data.put("author", AUTHOR);
+            String modelNameUpperCamel = StringUtils.isEmpty(modelName) ? tableNameConvertUpperCamel(tableName) : modelName;
+            data.put("baseRequestMapping", modelNameConvertMappingPath(modelNameUpperCamel));
+            data.put("modelNameUpperCamel", modelNameUpperCamel);
+            data.put("modelNameLowerCamel", CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, modelNameUpperCamel));
+            data.put("basePackage", BASE_PACKAGE);
+            // 模板文件
+            File file = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_CONTROLLER + modelNameUpperCamel + "Controller.java");
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            //cfg.getTemplate("controller-restful.ftl").process(data, new FileWriter(file));
+            cfg.getTemplate("controller.ftl").process(data, new FileWriter(file));
+
+            System.out.println(modelNameUpperCamel + "Controller.java 生成成功");
+        } catch (Exception e) {
+            throw new RuntimeException("生成Controller失败", e);
         }
     }
 
